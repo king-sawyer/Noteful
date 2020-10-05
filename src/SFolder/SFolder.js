@@ -1,18 +1,24 @@
 import React from "react";
-import folders from "../STORE";
+// import folders from "../STORE";
+import Context from "../Context";
 
-function SFolder(props) {
-  let note = folders.notes.find(
-    (snote) => snote.id === props.match.params.noteid
-  );
+class SFolder extends React.Component {
+  static contextType = Context;
+  render() {
+    let note = this.context.notes.find(
+      (snote) => snote.id === this.props.match.params.noteid
+    );
 
-  let folder = folders.folders.find((sfolder) => sfolder.id === note.folderId);
+    let folder = this.context.folders.find(
+      (sfolder) => sfolder.id === note.folderId
+    );
 
-  return (
-    <div>
-      {folder.name} <button>Back</button>
-    </div>
-  );
+    return (
+      <div>
+        {folder.name} <button>Back</button>
+      </div>
+    );
+  }
 }
 
 export default SFolder;
