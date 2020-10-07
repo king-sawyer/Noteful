@@ -4,9 +4,9 @@ import Context from "../Context";
 
 class AllNotes extends React.Component {
   static contextType = Context;
-  handleClickDelete = (e) => {
+  handleClickDelete = (e, noteId) => {
     e.preventDefault();
-    const noteId = this.props.id;
+    // const noteId = this.props.id;
 
     fetch(`https://localhost:9090/notes/${noteId}`, {
       method: "DELETE",
@@ -38,7 +38,9 @@ class AllNotes extends React.Component {
                 <h3>{note.name}</h3>
               </Link>
               <p>Modified: {note.modified}</p>
-              <button onClick={this.handleClickDelete}>Remove</button>
+              <button onClick={(e) => this.handleClickDelete(e, note.id)}>
+                Remove
+              </button>
             </li>
           ))}
         </ul>
