@@ -5,13 +5,14 @@ import Context from "../Context";
 class SFolder extends React.Component {
   static contextType = Context;
   render() {
-    let note = this.context.notes.find(
-      (snote) => snote.id === this.props.match.params.noteid
-    );
+    let note =
+      this.context.notes.find(
+        (snote) => snote.id === this.props.match.params.noteid
+      ) || null;
 
-    let folder = this.context.folders.find(
-      (sfolder) => sfolder.id === note.folderId
-    );
+    let folder = note
+      ? this.context.folders.find((sfolder) => sfolder.id === note.folderId)
+      : {};
 
     return (
       <div>

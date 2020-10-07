@@ -1,14 +1,46 @@
 import React from "react";
-import { Route } from "react-router-dom";
+import { Route, Link } from "react-router-dom";
 import Header from "./Header/Header";
 import SideBar from "./SideBar/SideBar";
 import Notes from "./Notes/Notes";
 import Context from "./Context";
+import AddNote from "./AddNote/AddNote";
 
 class App extends React.Component {
   state = {
     notes: [],
     folders: [],
+    handleDeleteNote: (noteId, history) => {
+      fetch(`http://localhost:9090/notes/${noteId}`, {
+        method: "DELETE",
+        headers: {
+          "content-type": "application/json",
+        },
+      })
+        .then((res) => {
+          if (!res.ok) return res.json().then((e) => Promise.reject(e));
+          return res.json();
+        })
+        .then(() => {
+          this.setState(
+            {
+              notes: this.state.notes.filter((note) => note.id !== noteId),
+            },
+            () => history.push("/")
+          );
+        })
+        .catch((error) => {
+          console.error({ error });
+        });
+    },
+    addNote: (note) => {
+      this.setState({ notes: [...this.state.notes, note] });
+      fetch(`https://localhost:9090/notes/${note}`, {
+        method: "POST",
+      })
+        .then((res) => res.json())
+        .then((data) => console.log(data));
+    },
   };
 
   componentDidMount() {
@@ -35,25 +67,14 @@ class App extends React.Component {
       .catch((error) => console.error(error));
   }
 
-  handleDeleteNote = (noteId) => {
-    this.setState({
-      notes: this.state.notes.filter((note) => note.id !== noteId),
-    });
-  };
-
   render() {
-    let value = {
-      folders: this.state.folders,
-      notes: this.state.notes,
-      deleteNote: this.handleDeleteNote,
-    };
-
     return (
-      <Context.Provider value={value}>
+      <Context.Provider value={this.state}>
         <div className="App">
           <Route path="/" component={Header} />
           <Route path="/" component={SideBar} />
           <Route path="/" component={Notes} />
+          <Route path="/addNote" component={AddNote} />
         </div>
       </Context.Provider>
     );

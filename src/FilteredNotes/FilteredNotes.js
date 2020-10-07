@@ -18,6 +18,14 @@ class FilteredNotes extends React.Component {
                 {" "}
                 <h3>{item.name}</h3>
               </Link>
+              <p>Modified: {note.modified}</p>
+              <button
+                onClick={() =>
+                  this.context.handleDeleteNote(item.id, this.props.history)
+                }
+              >
+                Remove
+              </button>
             </li>
           ))}
         </ul>
