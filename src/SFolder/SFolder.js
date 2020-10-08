@@ -1,6 +1,8 @@
 import React from "react";
 // import folders from "../STORE";
 import Context from "../Context";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
 
 class SFolder extends React.Component {
   static contextType = Context;
@@ -16,10 +18,20 @@ class SFolder extends React.Component {
 
     return (
       <div>
-        {folder.name} <button>Back</button>
+        {folder.name}
+        <Link to="/">
+          <button>Back</button>
+        </Link>
       </div>
     );
   }
 }
 
 export default SFolder;
+
+SFolder.propTypes = {
+  context: PropTypes.shape({
+    notes: PropTypes.object,
+    folders: PropTypes.object,
+  }),
+};

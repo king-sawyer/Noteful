@@ -1,5 +1,6 @@
 import React from "react";
 import Context from "../Context";
+import PropTypes from "prop-types";
 
 class AddNote extends React.Component {
   static contextType = Context;
@@ -13,7 +14,6 @@ class AddNote extends React.Component {
       (today.getMonth() + 1) +
       "-" +
       today.getDate();
-    console.log(date);
 
     this.context.handleNoteChange.changeNoteModified(date);
   }
@@ -29,9 +29,16 @@ class AddNote extends React.Component {
 
     return (
       <div className="AddNoteForm">
-        <form>
+        <form
+          onSubmit={(e) => {
+            this.context.addNote(e, note);
+            this.props.history.push("/");
+            this.context.handleNoteChange.clearNoteNameContent();
+          }}
+        >
           <label htmlFor="noteFormId">Note: </label>
           <input
+            required
             type="text"
             id="noteFormId"
             value={this.context.noteName}
@@ -61,7 +68,7 @@ class AddNote extends React.Component {
               </option>
             ))}
           </select>
-          <button onClick={(e) => this.context.addNote(e, note)}>Submit</button>
+          <button>Submit</button>
         </form>
       </div>
     );
@@ -69,3 +76,16 @@ class AddNote extends React.Component {
 }
 
 export default AddNote;
+
+AddNote.propTypes = {
+  context: PropTypes.shape({
+    folders: PropTypes.object,
+    handleNoteChange: PropTypes.object,
+    noteContent: PropTypes.string,
+    noteName: PropTypes.string,
+    addNote: PropTypes.func,
+    noteId: PropTypes.string,
+    noteFolderId: PropTypes.string,
+    noteModified: PropTypes.string,
+  }),
+};

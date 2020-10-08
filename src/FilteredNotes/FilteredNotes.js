@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Context from "../Context";
+import PropTypes from "prop-types";
 
 class FilteredNotes extends React.Component {
   static contextType = Context;
@@ -29,10 +30,19 @@ class FilteredNotes extends React.Component {
             </li>
           ))}
         </ul>
-        <button>Add Note</button>
+        <Link to="/addNote">
+          <button>Add Note</button>
+        </Link>
       </div>
     );
   }
 }
 
 export default FilteredNotes;
+
+FilteredNotes.propTypes = {
+  context: PropTypes.shape({
+    handleDeleteNote: PropTypes.func,
+    notes: PropTypes.object,
+  }),
+};

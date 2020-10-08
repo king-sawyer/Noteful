@@ -5,6 +5,8 @@ import SideBar from "./SideBar/SideBar";
 import Notes from "./Notes/Notes";
 import Context from "./Context";
 import AddNote from "./AddNote/AddNote";
+import AddFolder from "./AddFolder/AddFolder";
+import ErrorBoundary from "./ErrorBoundary";
 
 class App extends React.Component {
   state = {
@@ -15,6 +17,8 @@ class App extends React.Component {
     noteContent: "",
     noteId: "d26e0714-ffaf-11e8-8eb2-f2801f1b9fd1",
     noteModified: "",
+    newFoldName: "",
+    newFoldId: "",
     handleDeleteNote: (noteId, history) => {
       fetch(`http://localhost:9090/notes/${noteId}`, {
         method: "DELETE",
@@ -65,6 +69,30 @@ class App extends React.Component {
           noteModified: val,
         });
       },
+      clearNoteNameContent: () => {
+        this.setState({
+          noteName: "",
+          noteContent: "",
+        });
+      },
+    },
+    handleFolderChange: (val) => {
+      this.setState({
+        newFoldName: val,
+      });
+    },
+    addFolder: (e, newFold) => {
+      e.preventDefault();
+      this.setState({ folders: [...this.state.folders, newFold] });
+      fetch("http://localhost:9090/folders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newFold),
+      })
+        .then((response) => response.json())
+        .catch((error) => {
+          throw new Error("Something went wrong when trying to add a folder!");
+        });
     },
 
     addNote: (e, note) => {
@@ -80,9 +108,8 @@ class App extends React.Component {
           return res.json();
         })
         .catch((error) => {
-          console.error(error);
+          throw new Error("Something went wrong when trying to add a note");
         });
-      console.log({ note });
     },
   };
 
@@ -117,7 +144,18 @@ class App extends React.Component {
           <Route path="/" component={Header} />
           <Route path="/" component={SideBar} />
           <Route path="/" component={Notes} />
-          <Route path="/addNote" component={AddNote} />
+          <ErrorBoundary>
+            <Route
+              path="/addNote"
+              render={(rprops) => <AddNote {...rprops} />}
+            />
+          </ErrorBoundary>
+          <ErrorBoundary>
+            <Route
+              path="/addFolder"
+              render={(rprops) => <AddFolder {...rprops} />}
+            />
+          </ErrorBoundary>
         </div>
       </Context.Provider>
     );

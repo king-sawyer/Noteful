@@ -5,6 +5,7 @@ export default React.createContext({
   folders: [],
   deleteNote: () => {},
   addNote: () => {},
+  addFolder: () => {},
   handleNoteChange: {},
   handleNoteModified: {},
   noteName: "",
@@ -12,4 +13,6 @@ export default React.createContext({
   noteContent: "",
   noteId: "",
   noteModified: "",
+  newFoldName: "",
+  newFoldId: "",
 });

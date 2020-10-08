@@ -1,13 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Context from "../Context";
+import moment from "moment";
+import PropTypes from "prop-types";
 
 class AllNotes extends React.Component {
   static contextType = Context;
 
   render() {
-    var ran = Math.floor(Math.random() * 100000);
-
+    var ran = Math.floor(Math.random() * 100000000).toString();
+    let rando = "e" + ran;
     return (
       <div className="allNotesDiv">
         <ul>
@@ -17,7 +19,7 @@ class AllNotes extends React.Component {
                 {" "}
                 <h3>{note.name}</h3>
               </Link>
-              <p>Modified: {note.modified}</p>
+              <p>Modified: {moment(note.modified).format("YYYY Do MMM")}</p>
               <button
                 onClick={() =>
                   this.context.handleDeleteNote(note.id, this.props.history)
@@ -29,7 +31,7 @@ class AllNotes extends React.Component {
           ))}
         </ul>
         <Link to={"/addNote"}>
-          <button onClick={() => this.context.handleNoteChange.changeID(ran)}>
+          <button onClick={() => this.context.handleNoteChange.changeID(rando)}>
             Add Note
           </button>
         </Link>
@@ -39,3 +41,11 @@ class AllNotes extends React.Component {
 }
 
 export default AllNotes;
+
+AllNotes.propTypes = {
+  context: PropTypes.shape({
+    handleNoteChange: PropTypes.object,
+    handleDeleteNote: PropTypes.func,
+    notes: PropTypes.object,
+  }),
+};

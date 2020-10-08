@@ -5,7 +5,7 @@ import SFolder from "../SFolder/SFolder";
 
 function SideBar(props) {
   return (
-    <div>
+    <div className="sidebar">
       <Route exact path="/" component={baseFolds} />
       <Route
         path="/note/:noteid"

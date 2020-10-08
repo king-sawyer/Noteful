@@ -1,6 +1,7 @@
 import React from "react";
 import Context from "../Context";
 import { Redirect } from "react-router-dom";
+import moment from "moment";
 
 class SpecificNote extends React.Component {
   static contextType = Context;
@@ -13,7 +14,7 @@ class SpecificNote extends React.Component {
     return note ? (
       <div>
         <h2>{note.name}</h2>
-        <p>Modified: {note.modified}</p>
+        <p>Modified: {moment(note.modified).format("YYYY Do MMM")}</p>
         <button
           onClick={() =>
             this.context.handleDeleteNote(note.id, this.props.history)

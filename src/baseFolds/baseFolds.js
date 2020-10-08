@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import Context from "../Context";
+import PropTypes from "prop-types";
 
 class baseFolds extends React.Component {
   static contextType = Context;
@@ -14,10 +15,18 @@ class baseFolds extends React.Component {
             </li>
           ))}
         </ul>
-        <button>+ Folder</button>
+        <Link to="/addFolder">
+          <button>+ Folder</button>
+        </Link>
       </div>
     );
   }
 }
 
 export default baseFolds;
+
+baseFolds.propTypes = {
+  context: PropTypes.shape({
+    folders: PropTypes.object,
+  }),
+};
