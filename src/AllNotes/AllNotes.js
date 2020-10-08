@@ -4,30 +4,10 @@ import Context from "../Context";
 
 class AllNotes extends React.Component {
   static contextType = Context;
-  handleClickDelete = (e, noteId) => {
-    e.preventDefault();
-    // const noteId = this.props.id;
 
-    fetch(`https://localhost:9090/notes/${noteId}`, {
-      method: "DELETE",
-      headers: {
-        "content-type": "application/json",
-      },
-    })
-      .then((res) => {
-        if (!res.ok) return res.json().then((e) => Promise.reject(e));
-        return res.json();
-      })
-      .then(() => {
-        this.context.deleteNote(noteId);
-        // allow parent to perform extra behaviour
-        this.props.onDeleteNote(noteId);
-      })
-      .catch((error) => {
-        console.error({ error });
-      });
-  };
   render() {
+    var ran = Math.floor(Math.random() * 100000);
+
     return (
       <div className="allNotesDiv">
         <ul>
@@ -38,13 +18,21 @@ class AllNotes extends React.Component {
                 <h3>{note.name}</h3>
               </Link>
               <p>Modified: {note.modified}</p>
-              <button onClick={(e) => this.handleClickDelete(e, note.id)}>
+              <button
+                onClick={() =>
+                  this.context.handleDeleteNote(note.id, this.props.history)
+                }
+              >
                 Remove
               </button>
             </li>
           ))}
         </ul>
-        <button>Add Note</button>
+        <Link to={"/addNote"}>
+          <button onClick={() => this.context.handleNoteChange.changeID(ran)}>
+            Add Note
+          </button>
+        </Link>
       </div>
     );
   }
