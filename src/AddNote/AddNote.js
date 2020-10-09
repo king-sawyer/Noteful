@@ -20,9 +20,9 @@ class AddNote extends React.Component {
 
   render(props) {
     let note = {
-      id: this.context.noteId,
+      // id: this.context.noteId,
       name: this.context.noteName,
-      modified: this.context.noteModified,
+      // modified: this.context.noteModified,
       folderId: this.context.noteFolderId,
       content: this.context.noteContent,
     };

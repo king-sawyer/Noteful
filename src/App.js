@@ -15,7 +15,7 @@ class App extends React.Component {
     noteName: "",
     noteFolderId: "b0715efe-ffaf-11e8-8eb2-f2801f1b9fd1",
     noteContent: "",
-    noteId: "d26e0714-ffaf-11e8-8eb2-f2801f1b9fd1",
+    noteId: "",
     noteModified: "",
     newFoldName: "",
     newFoldId: "",
@@ -96,8 +96,8 @@ class App extends React.Component {
     },
 
     addNote: (e, note) => {
+      console.log(note);
       e.preventDefault();
-      this.setState({ notes: [...this.state.notes, note] });
       fetch(`http://localhost:9090/notes`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -106,6 +106,9 @@ class App extends React.Component {
         .then((res) => {
           if (!res.ok) return res.json().then((e) => Promise.reject(e));
           return res.json();
+        })
+        .then((note) => {
+          this.setState({ notes: [...this.state.notes, note] });
         })
         .catch((error) => {
           throw new Error("Something went wrong when trying to add a note");
