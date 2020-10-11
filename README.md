@@ -3,7 +3,7 @@
 
 This project was created primarily to further expierience using React. 
 
-Throughout the project I utelized different aspects of React such as
+Throughout the project I utelized different aspects of React such as:
 
   * Routing
   * Context
